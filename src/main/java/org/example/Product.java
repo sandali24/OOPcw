@@ -1,13 +1,13 @@
 package org.example;
 
-//Abstract Super Class (Product)
+//Abstract Super Class Product
 public abstract class Product {
     private String productId;
     private String productName;
     private int numOfAvailableItems;
     private double price;
 
-    //Constructor for Product Class
+    //Constructor of Product Class
     public Product(String productId, String productName, int numOfAvailableItems, double price) {
         this.productId = productId;
         this.productName = productName;
