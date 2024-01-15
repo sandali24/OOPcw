@@ -91,10 +91,10 @@ public class WestminsterShoppingManager implements ShoppingManager {
             listOfProductsUser.add(clothing);
         }
 
-//        public static void deleteProduct () {
-//           System.out.print("Insert the Product ID: ");
-//         String productId = scanner.next();
-//        }
+        public static void deleteProduct () {
+           System.out.print("Insert the Product ID: ");
+         String productId = scanner.next();
+        }
 
     }
 
