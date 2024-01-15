@@ -94,14 +94,29 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     public static void deleteProduct() {
+        // Get user input
         System.out.print("Insert the Product ID: ");
         String productId = scanner.next();
-        for (int i = 0; i <= listOfProductsUser.size(); i++) {
+
+        // Going through the ArrayList to find and remove the element
+        for (int i = 0; i < listOfProductsUser.size(); i++) {
             if ((listOfProductsUser.get(i).getProductId() != null) && (productId.equals(listOfProductsUser.get(i).getProductId()))) {
                 System.out.println("Deleted Product ID: " + listOfProductsUser.get(i).getProductId());
                 listOfProductsUser.remove(i);
+                // Adjust the index after remove an element
+                i--;
             }
-            System.out.println(listOfProductsUser.get(i));
+
+            // Check if the ArrayList is empty
+            if (listOfProductsUser.isEmpty()){
+                System.out.println("ArrayList is empty now.");
+            } else {
+                // Print the remaining elements
+                System.out.println("Remaining elements in the ArrayList:");
+                for (Product element : listOfProductsUser){
+                    System.out.println(element);
+                }
+            }
         }
     }
 }
