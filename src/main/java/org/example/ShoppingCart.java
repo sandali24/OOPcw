@@ -22,7 +22,7 @@ public class ShoppingCart {
         return listOfProducts;
     }
 
-    public void addProduct(Product product){
+     void addProduct(Product product){
         listOfProducts.add(product);
     }
     public void removeProduct(Product product){
