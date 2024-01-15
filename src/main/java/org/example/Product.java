@@ -40,4 +40,10 @@ public abstract class Product {
     public double getPrice(){
         return price;
     }
+    public String toString(){
+        return "productId= " + productId +
+                ", productName= " + productName +
+                ", numOfAvailableItems= " + numOfAvailableItems +
+                ", price= "+ price;
+    }
 }

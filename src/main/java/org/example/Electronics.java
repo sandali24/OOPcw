@@ -25,4 +25,11 @@ public class Electronics extends Product{
     public int getWarrantyPeriod(){
         return warrantyPeriod;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", brand= " + brand +
+                ", warrantyPeriod= " + warrantyPeriod;
+    }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class WestminsterShoppingManager implements ShoppingManager {
+    public static WestminsterShoppingManager shoppingManager = new WestminsterShoppingManager();
     public static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Product> listOfProductsUser = new ArrayList<>();
 
@@ -18,7 +19,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 addProduct();
                 break;
             case 2:
-                //deleteProduct();
+                deleteProduct();
                 break;
             default:
                 System.out.println("Invalid choice, Please enter a valid option.");
@@ -52,7 +53,6 @@ public class WestminsterShoppingManager implements ShoppingManager {
         } else {
             System.out.println("You can add only 50 items, Cannot add more!");
         }
-
     }
 
     public static void addElectronics() {
@@ -68,33 +68,41 @@ public class WestminsterShoppingManager implements ShoppingManager {
         String brand = scanner.next();
         System.out.print("Please enter the warranty period: ");
         int warrantyPeriod = scanner.nextInt();
-        Electronics electronics = new Electronics(productId, productName, numOfAvailableItems, price, brand, warrantyPeriod);
+        Product electronics = new Electronics(productId, productName, numOfAvailableItems, price, brand, warrantyPeriod);
         listOfProductsUser.add(electronics);
+        deleteProduct();
 //        for (int i = 0; i < listOfProductsUser.size(); i++) {
-//            System.out.println(listOfProductsUser.get(i));
-//        }
+//            System.out.println(electronics.toString());
+//            }
     }
-        public static void addClothing() {
-            System.out.print("Please enter the product id: ");
-            String productId = scanner.next();
-            System.out.print("Please enter the product name: ");
-            String productName = scanner.next();
-            System.out.print("Please enter the available items: ");
-            int numOfAvailableItems = scanner.nextInt();
-            System.out.print("Please enter the price: ");
-            double price = scanner.nextDouble();
-            System.out.print("Please enter the size: ");
-            String size = scanner.next();
-            System.out.print("Please enter the colour: ");
-            String colour = scanner.next();
-            Clothing clothing = new Clothing(productId,productName,numOfAvailableItems,price,size,colour);
-            listOfProductsUser.add(clothing);
-        }
 
-        public static void deleteProduct () {
-           System.out.print("Insert the Product ID: ");
-         String productId = scanner.next();
-        }
-
+    public static void addClothing() {
+        System.out.print("Please enter the product id: ");
+        String productId = scanner.next();
+        System.out.print("Please enter the product name: ");
+        String productName = scanner.next();
+        System.out.print("Please enter the available items: ");
+        int numOfAvailableItems = scanner.nextInt();
+        System.out.print("Please enter the price: ");
+        double price = scanner.nextDouble();
+        System.out.print("Please enter the size: ");
+        String size = scanner.next();
+        System.out.print("Please enter the colour: ");
+        String colour = scanner.next();
+        Product clothing = new Clothing(productId, productName, numOfAvailableItems, price, size, colour);
+        listOfProductsUser.add(clothing);
     }
+
+    public static void deleteProduct() {
+        System.out.print("Insert the Product ID: ");
+        String productId = scanner.next();
+        for (int i = 0; i <= listOfProductsUser.size(); i++) {
+            if ((listOfProductsUser.get(i).getProductId() != null) && (productId.equals(listOfProductsUser.get(i).getProductId()))) {
+                System.out.println("Deleted Product ID: " + listOfProductsUser.get(i).getProductId());
+                listOfProductsUser.remove(i);
+            }
+            System.out.println(listOfProductsUser.get(i));
+        }
+    }
+}
 
