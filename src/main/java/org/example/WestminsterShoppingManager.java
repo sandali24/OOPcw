@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,7 +11,9 @@ public class WestminsterShoppingManager implements ShoppingManager {
     public static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Product> listOfProductsUser = new ArrayList<>();
 
-    public static void main(String[] args) {
+
+
+    public static void main(String[] args) throws IOException {
         while (true) {
 
             displayMenu();
@@ -28,6 +31,12 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 case 3:
                     printListOfProducts();
                     break;
+                case 4:
+                    saveIntoFile();
+                    break;
+                case 5:
+                    fileReader();
+                    break;
                 case 0:
                     System.out.println("Exiting the program...");
                     System.exit(0);
@@ -43,6 +52,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
         System.out.println("    1. Add a new product");
         System.out.println("    2. Delete a product");
         System.out.println("    3. Print list of product");
+        System.out.println("    4. Save Product");
+        System.out.println("    5. Read file");
         System.out.println("    0. Exit the Program \n");
 
     }
@@ -141,5 +152,33 @@ public class WestminsterShoppingManager implements ShoppingManager {
             }
         }
     }
+
+    public static void saveIntoFile() {
+        String fileName = "product.txt";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Product product : listOfProductsUser) {
+                if (product != null) {
+                    writer.write(product.toString());
+                    writer.newLine();
+                }
+            } System.out.println("Products written to " + fileName);
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+    public static void fileReader() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("product.txt"))) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                reader.toString();
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        }
+    }
+
 }
 

@@ -46,4 +46,5 @@ public abstract class Product {
                 ", numOfAvailableItems= " + numOfAvailableItems +
                 ", price= "+ price;
     }
+
 }
