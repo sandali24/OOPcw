@@ -24,4 +24,10 @@ public class Clothing extends Product{
     public String getColour() {
         return colour;
     }
+
+    public String toString() {
+        return super.toString() +
+                ", size= " + size +
+                ", warrantyPeriod= " + colour;
+    }
 }

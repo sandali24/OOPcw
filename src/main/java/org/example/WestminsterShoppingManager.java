@@ -1,6 +1,8 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class WestminsterShoppingManager implements ShoppingManager {
@@ -23,6 +25,9 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 case 2:
                     deleteProduct();
                     break;
+                case 3:
+                    printListOfProducts();
+                    break;
                 case 0:
                     System.out.println("Exiting the program...");
                     System.exit(0);
@@ -37,6 +42,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         System.out.println("---Westminster Shopping Menu---");
         System.out.println("    1. Add a new product");
         System.out.println("    2. Delete a product");
+        System.out.println("    3. Print list of product");
         System.out.println("    0. Exit the Program \n");
 
     }
@@ -121,6 +127,17 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 } else {
                     System.out.println("not in array");
                 }
+            }
+        }
+    }
+
+    public static void printListOfProducts(){
+        if (listOfProductsUser.isEmpty()){
+            System.out.println("array is empty");
+        } else {
+            Collections.sort(listOfProductsUser, Comparator.comparing(Product::getProductId));
+            for (Product product:listOfProductsUser){
+                System.out.println(product.toString());
             }
         }
     }
