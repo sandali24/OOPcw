@@ -1,10 +1,15 @@
 package org.example;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
+import javax.swing.*;
+import javax.swing.JTable;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 
 public class WestminsterShoppingManager implements ShoppingManager {
     public static WestminsterShoppingManager shoppingManager = new WestminsterShoppingManager();
@@ -37,6 +42,9 @@ public class WestminsterShoppingManager implements ShoppingManager {
                 case 5:
                     fileReader();
                     break;
+                case 6:
+                    openGUI();
+                    break;
                 case 0:
                     System.out.println("Exiting the program...");
                     System.exit(0);
@@ -54,6 +62,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         System.out.println("    3. Print list of product");
         System.out.println("    4. Save Product");
         System.out.println("    5. Read file");
+        System.out.println("    6. Open GUI");
         System.out.println("    0. Exit the Program \n");
 
     }
@@ -178,6 +187,170 @@ public class WestminsterShoppingManager implements ShoppingManager {
         } catch (IOException e) {
             System.out.println("Error reading from file: " + e.getMessage());
         }
+    }
+
+    public static void openGUI (){
+        System.out.println(listOfProductsUser);
+        // Create a JFrame (window)
+      JFrame frame = new JFrame("Westminster Shopping Center");
+      frame.setSize(600,750); // Set the size of the frame
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close the application when the frame is closed
+        frame.setLayout(null);
+
+        // Create a JPanel (panel)
+        JPanel toppanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        toppanel1.setBackground(Color.white);
+        toppanel1.setBounds(0,0,400,75);
+
+        // Add components (label, combo box, and button) to the panel
+        JLabel label = new JLabel("Select Product Category");
+        // Add an empty border to the label to create space around it
+        label.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
+        JComboBox<String> comboBox = new JComboBox<>(new String[]{"All", "Electronics", "Clothing"});
+
+        toppanel1.add(label);
+        toppanel1.add(Box.createRigidArea(new Dimension(10, 0))); // Add space between JLabel and JComboBox
+        toppanel1.add(comboBox);
+        toppanel1.add(Box.createHorizontalGlue());
+
+        // Add space between the combo box and the top border
+        toppanel1.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+
+        // Add the panel to the frame
+        frame.add(toppanel1);
+
+        // Create a panel with FlowLayout
+        JPanel toppanel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Add a button to the panel
+        JButton button = new JButton("Shopping Cart");
+        toppanel2.add(button);
+        toppanel2.setBackground(Color.white);
+        toppanel2.setBounds(400,0,187,75);
+
+        // Add the panel to the frame
+        frame.add(toppanel2);
+
+//        JPanel toppanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel toppanel3 = new JPanel(new BorderLayout());
+        toppanel3.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
+        toppanel3.setBackground(Color.white);
+        toppanel3.setBounds(0,75,587,250);
+        toppanel3.setBackground(Color.PINK);
+        frame.add(toppanel3);
+        // Table for product listing
+        Object[][] data = new Object[0][5]; // Change the size if needed
+        String[] defaultcolumnNames = {"Product ID", "Name", "Category", "Price(€)", "Info"};
+
+        // Create a table model and set the column names
+//        DefaultTableModel model = new DefaultTableModel(defaultcolumnNames, 0);
+        DefaultTableModel model = new DefaultTableModel(data, defaultcolumnNames);
+
+        JTable table = new JTable(model);
+        JTextArea textArea1 = new JTextArea(); // Initialize textArea1
+
+//        for (String columnName : defaultcolumnNames) {
+//            model.addColumn(columnName);
+//        }
+
+
+        // Populate the table model with product data
+        for (Product product : listOfProductsUser) {
+            String category = "";
+            String details = "";
+            if (product instanceof Electronics) {
+                category = "Electronics";
+                details = ((Electronics) product).getBrand() + " ," + " " + ((Electronics) product).getWarrantyPeriod();
+            } else if (product instanceof Clothing) {
+                category = "Clothing";
+                details = ((Clothing) product).getSize() + " ," + " " + ((Clothing) product).getColour();
+            }
+
+            // Adding a row to the model
+            model.addRow(new Object[]{
+                    product.getProductId(),
+                    product.getProductName(),
+                    category,
+                    String.format("%.2f €", product.getPrice()),
+                    details
+            });
+        }
+
+        // Initialize the class-level table field
+//        JTable table = new JTable(model);
+        JScrollPane tableScrollPane = new JScrollPane(table);
+        toppanel3.add(table);
+        table.add(tableScrollPane);
+
+        // Set the frame visibility to true
+        frame.setVisible(true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        // Center panel for JTable
+//        JPanel centerPanel = new JPanel(new BorderLayout());
+////        centerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
+//        centerPanel.setBounds(0,75,600,250);
+//
+//        // Initialize the model with an empty data array and column names
+//        Object[][] data = new Object[0][5]; // Change the size if needed
+//        String[] columnNames = {"Product ID", "Name", "Category", "Price($)", "Info"};
+//        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+//
+//        JTable jTable1 = new JTable(model);
+//        JTextArea textArea1 = new JTextArea(); // Initialize textArea1
+//
+////        // Populate jTable1 with initial data from productList
+////        Product[] productList = products.getProductlist();
+//
+//
+//
+//        frame.add(centerPanel);
+//        centerPanel.add(jTable1);
+//        centerPanel.add(textArea1);
+//
+//        // Set the frame visibility to true
+//        frame.setVisible(true);
+
     }
 
 }
