@@ -3,6 +3,8 @@ package org.example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -192,168 +194,139 @@ public class WestminsterShoppingManager implements ShoppingManager {
     }
 
     public static void openGUI() {
-        DefaultTableModel tableModel = new DefaultTableModel ();
-        tableModel.addColumn ("name");
-        tableModel.addColumn ("id");
-        tableModel.addColumn ("price");
-        tableModel.addColumn ("details");
 
-//Loop through the array list and add each product as a row to the table model
-        for (Product product : listOfProductsUser) {
-            Object [] row = new Object [] {product.getProductName(), product.getProductId(), product.getPrice (), product.getNumOfAvailableItems()};
-            tableModel.addRow (row);
+                JFrame frame = new JFrame("My GUI");
+                frame.setLayout(new GridBagLayout());
+                GridBagConstraints c = new GridBagConstraints();
+                JPanel panel1 = new JPanel();
+                JPanel panel2 = new JPanel();
+                JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Changed to FlowLayout for vertical display
+                panel3.setBackground(Color.PINK);
+                JPanel panel4 = new JPanel();
+                JPanel subPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                JPanel subPanel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
+                JLabel label = new JLabel("Select Product Category");
+                label.setBorder(BorderFactory.createEmptyBorder(0, 185, 0, 0));
+                JComboBox<String> comboBox = new JComboBox<>(new String[]{"All", "Electronics", "Clothing"});
+                subPanel1.add(label);
+                subPanel1.add(Box.createRigidArea(new Dimension(10, 0)));
+                subPanel1.add(comboBox);
+                subPanel1.add(Box.createHorizontalGlue());
+                subPanel1.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+                JButton button = new JButton("Shopping Cart");
+                subPanel2.add(button);
+                subPanel2.setBounds(0, 0, 187, 75);
+                subPanel1.setPreferredSize(new Dimension(500, 100));
+                subPanel2.setPreferredSize(new Dimension(200, 100));
+                panel1.add(subPanel1);
+                panel1.add(subPanel2);
+                DefaultTableModel tableModel = new DefaultTableModel();
+                tableModel.addColumn("id");
+                tableModel.addColumn("name");
+                tableModel.addColumn("category");
+                tableModel.addColumn("price");
+                tableModel.addColumn("details");
+
+                // Assuming Product, Electronics, and Clothing classes are defined
+
+                for (Product product : listOfProductsUser) {
+                    String category = "";
+                    String details = "";
+                    if (product instanceof Electronics) {
+                        category = "Electronics";
+                        details = ((Electronics) product).getBrand() + " ," + " " + ((Electronics) product).getWarrantyPeriod();
+                    } else if (product instanceof Clothing) {
+                        category = "Clothing";
+                        details = ((Clothing) product).getSize() + " ," + " " + ((Clothing) product).getColour();
+                    }
+                    tableModel.addRow(new Object[]{
+                            product.getProductId(),
+                            product.getProductName(),
+                            category,
+                            String.format("%.2f €", product.getPrice()),
+                            details
+                    });
+                }
+                JTable table = new JTable(tableModel);
+                table.setRowHeight(40);
+                table.setPreferredScrollableViewportSize(new Dimension(500, 200));
+                JScrollPane scrollPane = new JScrollPane(table);
+                panel2.add(scrollPane);
+                JButton button2 = new JButton("This is a button");
+                panel4.add(button2);
+                c.gridx = 0;
+                c.gridy = 0;
+                c.gridwidth = 1;
+                c.fill = GridBagConstraints.BOTH;
+                frame.add(panel1, c);
+                c.gridx = 0;
+                c.gridy = 1;
+                frame.add(panel2, c);
+                c.gridx = 0;
+                c.gridy = 2;
+                c.weighty = 1.0; // Vertical fill
+                c.anchor = GridBagConstraints.NORTH;
+                frame.add(panel3, c);
+                c.gridx = 0;
+                c.gridy = 3;
+                frame.add(panel4, c);
+                frame.setSize(1000, 1000);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setVisible(true);
+
+                table.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int selectedRow = table.getSelectedRow();
+                        int selectedColumn = table.getSelectedColumn();
+                        if (selectedRow != -1 && selectedColumn == 0) {
+                            Object productID = table.getValueAt(selectedRow, 0);
+                            Object productName = table.getValueAt(selectedRow, 1);
+                            Object category = table.getValueAt(selectedRow, 2);
+                            Object price = table.getValueAt(selectedRow, 3);
+                            Object details = table.getValueAt(selectedRow, 4);
+
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("<html><body>");
+                            sb.append("<b>Selected Product - Details</b><br>");
+                            sb.append("Product ID: ").append(productID).append("<br>");
+                            sb.append("Product Name: ").append(productName).append("<br>");
+                            sb.append("Category: ").append(category).append("<br>");
+                            sb.append("Price: ").append(price).append("<br>");
+                            sb.append("Details: ").append(details);
+                            sb.append("</body></html>");
+
+                            JLabel rowLabel = new JLabel(sb.toString());
+                            panel3.removeAll(); // Clear the panel before adding the new label
+                            panel3.add(rowLabel);
+                            panel3.revalidate();
+                            panel3.repaint();
+                        }
+                    }
+                });
+            }
+
         }
 
-//Create a JTable with the table model
-        JTable table = new JTable (tableModel);
 
-        //Set the row height and the preferred scrollable viewport size of the table
-        table.setRowHeight (20);
-        table.setPreferredScrollableViewportSize (new Dimension (400, 200));
 
-//Create a JScrollPane with the table
-        JScrollPane scrollPane = new JScrollPane (table);
 
-//Create a JPanel and add the scroll pane to it
-        JPanel tablePanel = new JPanel ();
-        tablePanel.add (scrollPane);
-        tablePanel.setBackground(Color.white);
 
-//Create a JFrame and set the layout manager to BorderLayout
-        JFrame frame = new JFrame ("Products Table");
-        frame.setLayout (new BorderLayout ());
 
-//Add the table panel to the center region of the frame
-        frame.add (tablePanel, BorderLayout.CENTER);
 
-        //Create two JPanels for the top region of the frame
-        JPanel topPanel1 = new JPanel (new FlowLayout (FlowLayout.LEFT));
-//        topPanel1.setBounds(0, 0, 400, 75);
-        JPanel topPanel2 = new JPanel (new FlowLayout(FlowLayout.RIGHT));
 
 
 
 
 
-         //Add components (label, combo box, and button) to the panel
-        JLabel label = new JLabel("Select Product Category");
-        // Add an empty border to the label to create space around it
-        label.setBorder(BorderFactory.createEmptyBorder(0, 150, 0, 0));
-        JComboBox<String> comboBox = new JComboBox<>(new String[]{"All", "Electronics", "Clothing"});
 
-        topPanel1.add(label);
-        topPanel1.add(Box.createRigidArea(new Dimension(10, 0))); // Add space between JLabel and JComboBox
-        topPanel1.add(comboBox);
-        topPanel1.add(Box.createHorizontalGlue());
-//
-//        // Add space between the combo box and the top border
-        topPanel1.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
 
 
 
-        // Add a button to the panel
-        JButton button = new JButton("Shopping Cart");
-        topPanel2.add(button);
-        topPanel2.setBackground(Color.white);
-        topPanel2.setBounds(400, 0, 187, 75);
 
 
 
 
-
-        //Set the background color and preferred size of the panels
-        topPanel1.setBackground (Color.white);
-        topPanel2.setBackground (Color.white);
-        topPanel1.setPreferredSize (new Dimension (500, 100));
-        topPanel2.setPreferredSize (new Dimension (200, 100));
-
-
-        //Create another JPanel to hold the two panels horizontally
-        JPanel topPanel = new JPanel ();
-        topPanel.setLayout (new FlowLayout (FlowLayout.CENTER));
-        topPanel.setBounds(0, 0, 600, 750);
-//        topPanel.setBounds(0,0,600,750);
-
-//Add the two panels to the top panel
-        topPanel.add (topPanel1);
-        topPanel.add (topPanel2);
-
-//Add the top panel to the north region of the frame
-        frame.add (topPanel, BorderLayout.NORTH);
-
-
-//Set the size, location, and default close operation of the frame
-        frame.setSize(800,1000);
-        frame.setLocationRelativeTo (null);
-        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-
-//Make the frame visible and pack it
-        frame.pack ();
-        frame.setVisible (true);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        }
-    }
 
 
