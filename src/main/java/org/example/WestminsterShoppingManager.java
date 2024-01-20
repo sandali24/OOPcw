@@ -19,10 +19,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+
 public class WestminsterShoppingManager implements ShoppingManager {
     public static WestminsterShoppingManager shoppingManager = new WestminsterShoppingManager();
     public static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Product> listOfProductsUser = new ArrayList<>();
+//    public ArrayList<Product> usercart = ShoppingCart.listOfProducts;
+//    ShoppingCart shoppingCartObj = new ShoppingCart();
+    static GUI1 gui1 = new GUI1(GUI1.getProductList());
+
+
+
+
 
 
     public static void main(String[] args) throws IOException {
@@ -50,7 +58,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
                     fileReader();
                     break;
                 case 6:
-                    openGUI();
+                    gui1.openGUI();
                     break;
                 case 0:
                     System.out.println("Exiting the program...");
@@ -110,7 +118,7 @@ public class WestminsterShoppingManager implements ShoppingManager {
         System.out.print("Please enter the brand: ");
         String brand = scanner.next();
         System.out.print("Please enter the warranty period: ");
-        int warrantyPeriod = scanner.nextInt();
+        String warrantyPeriod = scanner.next();
         Product electronics = new Electronics(productId, productName, numOfAvailableItems, price, brand, warrantyPeriod);
         listOfProductsUser.add(electronics);
 
@@ -161,6 +169,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
             System.out.println("array is empty");
         } else {
             Collections.sort(listOfProductsUser, Comparator.comparing(Product::getProductId));
+
+
             for (Product product : listOfProductsUser) {
                 System.out.println(product.toString());
             }
@@ -194,151 +204,8 @@ public class WestminsterShoppingManager implements ShoppingManager {
             System.out.println("Error reading from file: " + e.getMessage());
         }
     }
-
-    public static void openGUI() {
-        JFrame frame = new JFrame("My GUI");
-        frame.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        JPanel panel1 = new JPanel();
-        JPanel panel2 = new JPanel();
-        JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Changed to FlowLayout for vertical display
-        panel3.setPreferredSize(new Dimension(10, 10)); // Adjusted size for printed details
-        panel3.setBorder(BorderFactory.createEmptyBorder(0, -5, 0, 0)); // Added padding
-        JPanel panel4 = new JPanel();
-        JPanel subPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel subPanel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JPanel subPanel3 = new JPanel(); // New subPanel3 for displaying saved data
-        subPanel3.setBorder(BorderFactory.createEmptyBorder(50,150,50,50)); // Adding border to subPanel3
-        panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JLabel label = new JLabel("Select Product Category");
-        label.setBorder(BorderFactory.createEmptyBorder(0, 185, 0, 0));
-        JComboBox<String> comboBox = new JComboBox<>(new String[]{"All", "Electronics", "Clothing"});
-        subPanel1.add(label);
-        subPanel1.add(Box.createRigidArea(new Dimension(10, 0)));
-        subPanel1.add(comboBox);
-        subPanel1.add(Box.createHorizontalGlue());
-        subPanel1.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
-        JButton button = new JButton("Shopping Cart");
-        subPanel2.add(button);
-
-        button.addActionListener(e -> {
-            JFrame newFrame = new JFrame("New Frame");
-            newFrame.setSize(400, 300);
-            newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Disposes the frame only
-            newFrame.setVisible(true);
-
-            JPanel newPanel = new JPanel();
-            JLabel newLabel = new JLabel("This is the new frame content.");
-            newPanel.add(newLabel);
-            newFrame.add(newPanel);
-        });
-
-        subPanel2.setBounds(0, 0, 187, 75);
-        subPanel1.setPreferredSize(new Dimension(500, 100));
-        subPanel2.setPreferredSize(new Dimension(200, 100));
-        panel1.add(subPanel1);
-        panel1.add(subPanel2);
-        DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("id");
-        tableModel.addColumn("name");
-        tableModel.addColumn("category");
-        tableModel.addColumn("price");
-        tableModel.addColumn("details");
-
-// Assuming Product, Electronics, and Clothing classes are defined
-
-        for (Product product : listOfProductsUser) {
-            String category = "";
-            String details = "";
-            if (product instanceof Electronics) {
-                category = "Electronics";
-                details = ((Electronics) product).getBrand() + " ," + " " + ((Electronics) product).getWarrantyPeriod();
-            } else if (product instanceof Clothing) {
-                category = "Clothing";
-                details = ((Clothing) product).getSize() + " ," + " " + ((Clothing) product).getColour();
             }
-            tableModel.addRow(new Object[]{
-                    product.getProductId(),
-                    product.getProductName(),
-                    category,
-                    String.format("%.2f €", product.getPrice()),
-                    details
-            });
-        }
-        JTable table = new JTable(tableModel);
-        table.setRowHeight(40);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 200));
-        JScrollPane scrollPane = new JScrollPane(table);
-        panel2.add(scrollPane);
-        JButton button2 = new JButton("This is a button");
-        panel4.add(button2);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.BOTH;
-        frame.add(panel1, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        frame.add(panel2, c);
-        c.gridx = 0;
-        c.gridy = 2;
-        c.weighty = 1.0; // Vertical fill
-        c.anchor = GridBagConstraints.NORTH;
-        frame.add(panel3, c);
-        c.gridx = 0;
-        c.gridy = 3;
-        frame.add(panel4, c);
-        frame.setSize(1000, 1000);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
 
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int selectedRow = table.getSelectedRow();
-                int selectedColumn = table.getSelectedColumn();
-                if (selectedRow != -1 && selectedColumn == 0) {
-                    Object productID = table.getValueAt(selectedRow, 0);
-                    Object productName = table.getValueAt(selectedRow, 1);
-                    Object category = table.getValueAt(selectedRow, 2);
-                    Object price = table.getValueAt(selectedRow, 3);
-                    Object details = table.getValueAt(selectedRow, 4);
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("<html><body>");
-                    sb.append("<b>Selected Product - Details</b><br>");
-                    sb.append("Product ID: ").append(productID).append("<br>");
-                    sb.append("Product Name: ").append(productName).append("<br>");
-                    sb.append("Category: ").append(category).append("<br>");
-                    sb.append("Price: ").append(price).append("<br>");
-                    sb.append("Details: ").append(details);
-                    sb.append("</body></html>");
-
-                    JLabel rowLabel = new JLabel(sb.toString());
-                    subPanel3.removeAll(); // Clear the subPanel3 before adding the new label
-                    subPanel3.add(rowLabel);
-                    panel3.add(subPanel3); // Adding subPanel3 to panel3
-                    panel3.revalidate();
-                    panel3.repaint();
-                    subPanel3.revalidate();
-                    subPanel3.repaint();
-                }
-            }
-        });
-
-        comboBox.addActionListener(e -> {
-            JComboBox cb = (JComboBox)e.getSource();
-            String selectedCategory = (String)cb.getSelectedItem();
-            TableRowSorter<TableModel> sorter = new TableRowSorter<>(tableModel);
-            table.setRowSorter(sorter);
-            if ("All".equals(selectedCategory)) {
-                sorter.setRowFilter(null);
-            } else {
-                sorter.setRowFilter(RowFilter.regexFilter(selectedCategory, 2));
-            }
-        });
-            }
-        }
 
 
 

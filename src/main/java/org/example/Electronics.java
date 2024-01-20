@@ -3,10 +3,10 @@ package org.example;
 //Sub Class Electronics
 public class Electronics extends Product{
     private String brand;
-    private int warrantyPeriod;
+    private String warrantyPeriod;
 
     //Constructor for Electronics
-    public Electronics(String productId, String productName, int numOfAvailableItems, double price, String brand, int warrantyPeriod) {
+    public Electronics(String productId, String productName, int numOfAvailableItems, double price, String brand, String warrantyPeriod) {
         super(productId, productName, numOfAvailableItems, price);
         this.brand = brand;
         this.warrantyPeriod = warrantyPeriod;
@@ -19,10 +19,10 @@ public class Electronics extends Product{
     public String getBrand(){
         return brand;
     }
-    public void setWarrantyPeriod(int warrantyPeriod){
+    public void setWarrantyPeriod(String warrantyPeriod){
         this.warrantyPeriod=warrantyPeriod;
     }
-    public int getWarrantyPeriod(){
+    public String getWarrantyPeriod(){
         return warrantyPeriod;
     }
 
