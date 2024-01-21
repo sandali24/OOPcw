@@ -16,35 +16,48 @@ public abstract class Product {
     }
 
     //Getters and Setters for Product Class
-    public void setProductId (String productId){
-        this.productId=productId;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
-    public String getProductId(){
+
+    public String getProductId() {
         return productId;
     }
-    public void setProductName(String productName){
-        this.productName=productName;
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
-    public String getProductName(){
+
+    public String getProductName() {
         return productName;
     }
-    public void setNumOfAvailableItems(int numOfAvailableItems){
-        this.numOfAvailableItems=numOfAvailableItems;
+
+    public void setNumOfAvailableItems(int numOfAvailableItems) {
+        this.numOfAvailableItems = numOfAvailableItems;
     }
-    public int getNumOfAvailableItems(){
+
+    public int getNumOfAvailableItems() {
         return numOfAvailableItems;
     }
-    public void setPrice(double price){
-        this.price=price;
+
+    public void setPrice(double price) {
+        this.price = price;
     }
-    public double getPrice(){
+
+    public double getPrice() {
         return price;
     }
-    public String toString(){
+
+    public String toString() {
         return "productId= " + productId +
                 ", productName= " + productName +
                 ", numOfAvailableItems= " + numOfAvailableItems +
-                ", price= "+ price;
+                ", price= " + price;
     }
 
+    public void decreaseAvailableItems() {
+        if (numOfAvailableItems > 0) {
+            numOfAvailableItems--;
+        }
+    }
 }
