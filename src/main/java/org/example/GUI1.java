@@ -19,39 +19,55 @@ import static org.example.WestminsterShoppingManager.listOfProductsUser;
 public class GUI1 {
     public static List<Product> productsInCart = new ArrayList<>();
     public static void opengui(){
-        JFrame frame = new JFrame("Westminster Shopping Center");
+        JFrame frame = new JFrame("Westminster Shopping Center");// Create a frame call Westminster Shopping Center
         frame.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        JPanel panel1 = new JPanel();
-        JPanel panel2 = new JPanel();
-        // Panel for selected product details (assuming this will be dynamically updated)
-//        JPanel detailsPanel = new JPanel();
-//        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
-//        detailsPanel.setBackground(Color.PINK);
-//        detailsPanel.add(new JLabel("Selected Product - Details"));
 
-        JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Changed to FlowLayout for vertical display
-        panel3.setPreferredSize(new Dimension(10, 10)); // Adjusted size for printed details
-        panel3.setBorder(BorderFactory.createEmptyBorder(0, -5, 0, 0)); // Added padding
+        JPanel panel1 = new JPanel();// Create four panels to hold the components
+        JPanel panel2 = new JPanel();
+        JPanel panel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel panel4 = new JPanel();
+
+        panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        // Set the preferred size and border of panel3
+        panel3.setPreferredSize(new Dimension(10, 10));
+        panel3.setBorder(BorderFactory.createEmptyBorder(0, -5, 0, 0));
+
+        // Create three sub-panels to hold the components
         JPanel subPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel subPanel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel subPanel3 = new JPanel();
 
-        JPanel subPanel3 = new JPanel(); // New subPanel3 for displaying saved data
+        // Add a label and set the border to subPanel3
         subPanel3.add(new JLabel("Selected Product - Details"));
-        subPanel3.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 50)); // Adding border to subPanel3
-        panel1.setLayout(new FlowLayout(FlowLayout.CENTER));
+        subPanel3.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 50));
+
+        // Create a label for the product category and set the border
         JLabel label = new JLabel("Select Product Category");
         label.setBorder(BorderFactory.createEmptyBorder(0, 185, 0, 0));
+
+        // Create a combo box with three options
         JComboBox<String> comboBox = new JComboBox<>(new String[]{"All", "Electronics", "Clothing"});
+
+        // Add the label, a rigid area, and the combo box to subPanel1
         subPanel1.add(label);
         subPanel1.add(Box.createRigidArea(new Dimension(10, 0)));
         subPanel1.add(comboBox);
         subPanel1.add(Box.createHorizontalGlue());
         subPanel1.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+        subPanel1.setPreferredSize(new Dimension(500, 100));
+
+        subPanel2.setBounds(0, 0, 187, 75);
+        subPanel2.setPreferredSize(new Dimension(200, 100));
+        panel1.add(subPanel1);
+        panel1.add(subPanel2);
+
+        // Create a button for the shopping cart
         JButton button = new JButton("Shopping Cart");
         subPanel2.add(button);
 
+        // Add an action listener to the button
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,39 +75,27 @@ public class GUI1 {
             }
         });
 
-
-//        button.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                gui2.GUI2method();
-//            }
-//        });
-
-        subPanel2.setBounds(0, 0, 187, 75);
-        subPanel1.setPreferredSize(new Dimension(500, 100));
-        subPanel2.setPreferredSize(new Dimension(200, 100));
-        panel1.add(subPanel1);
-        panel1.add(subPanel2);
+        // Create a table model to store the product data
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Product ID");
+        tableModel.addColumn("Product ID");// Add five columns to the table model
         tableModel.addColumn("Name");
         tableModel.addColumn("Category");
         tableModel.addColumn("Price");
         tableModel.addColumn("Info");
 
-// Assuming Product, Electronics, and Clothing classes are defined
-
         for (Product product : listOfProductsUser) {
-            String category = "";
+            String category = "";// Declare variables to store the category and details of each product
             String details = "";
-            if (product instanceof Electronics) {
+            if (product instanceof Electronics) {// Check if the product is an instance of Electronics and set the category to Electronics
                 category = "Electronics";
+                // Set the details to the brand and warranty period of the product
                 details = ((Electronics) product).getBrand() + " ," + " " + ((Electronics) product).getWarrantyPeriod();
-            } else if (product instanceof Clothing) {
+            } else if (product instanceof Clothing) {// Check if the product is an instance of Clothing and set the category to clothing
                 category = "Clothing";
+                // Set the details to the size and colour of the product
                 details = ((Clothing) product).getSize() + " ," + " " + ((Clothing) product).getColour();
             }
-            tableModel.addRow(new Object[]{
+            tableModel.addRow(new Object[]{// Add a row to the table model with the product information
                     product.getProductId(),
                     product.getProductName(),
                     category,
@@ -99,43 +103,42 @@ public class GUI1 {
                     details
             });
         }
-        JTable table = new JTable(tableModel);
+        JTable table = new JTable(tableModel);// Create a table with the table model
         table.setRowHeight(40);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer(); // Create a cell renderer for center alignment
         centerRenderer.setHorizontalAlignment(JLabel.CENTER); // Set the horizontal alignment to center
-        for (int i = 0; i < table.getColumnCount(); i++) { // Loop through all columns
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer); // Set the cell renderer for each column
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
         table.setPreferredScrollableViewportSize(new Dimension(500, 200));
-        JScrollPane scrollPane = new JScrollPane(table);
-        panel2.add(scrollPane);
+        JScrollPane scrollPane = new JScrollPane(table);// Create a scroll pane to hold the table
+        panel2.add(scrollPane);// Add the scroll pane to panel2
 
-
+        // Create a button for adding products to the shopping cart
         JButton button2 = new JButton("Add to Shopping Cart");
 
+        // Add an action listener to the button
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-
+                int selectedRow = table.getSelectedRow();// Get the index of the selected row in the table
+                // Check if a row is selected and get the product object from the list of products
                 if (selectedRow != -1) {
                     Product selectedProduct = listOfProductsUser.get(selectedRow);
-
-                    int setItem = 1;
-
-                    if (productsInCart.size() > 0) {
+                    int setItem = 1;// Declare a variable to store the number of items to add
+                    if (productsInCart.size() > 0) {// Check if the products in cart list is not empty
                         for (int i = 0; i < productsInCart.size(); i++) {
+                            // Check if the selected product ID matches the product ID in the list
                             if (selectedProduct.getProductId() == productsInCart.get(i).getProductId()) {
-                                setItem = productsInCart.get(i).getNumOfAvailableItems() + 1;
-                                productsInCart.get(i).setNumOfAvailableItems(setItem);
-                                productsInCart.remove(i);
+                                setItem = productsInCart.get(i).getNumOfAvailableItems() + 1;// Increment the number of items by one
+                                productsInCart.get(i).setNumOfAvailableItems(setItem);// Set the number of items for the product in the list
+                                productsInCart.remove(i);// Remove the product from the list
                                 break;
                             }
                         }
                     }
 
                     selectedProduct.setNumOfAvailableItems(setItem);
-
                     productsInCart.add(selectedProduct);
                     setItem = 1;
 
@@ -149,37 +152,6 @@ public class GUI1 {
                 }
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         panel4.add(button2);
         c.gridx = 0;
@@ -203,31 +175,39 @@ public class GUI1 {
         frame.setVisible(true);
 
 
-        table.addMouseListener(new MouseAdapter() {
+        table.addMouseListener(new MouseAdapter() {// Add a mouse listener to the table
             @Override
             public void mouseClicked(MouseEvent e) {
+                // Get the index of the selected row and column in the table
                 int selectedRow = table.getSelectedRow();
                 int selectedColumn = table.getSelectedColumn();
+                // Check if a row is selected and the column is the first one
                 if (selectedRow != -1 && selectedColumn == 0) {
+                    // Get the values of the product ID, name, category, price, and details from the table
                     Object productID = table.getValueAt(selectedRow, 0);
                     Object productName = table.getValueAt(selectedRow, 1);
                     Object category = table.getValueAt(selectedRow, 2);
                     Object price = table.getValueAt(selectedRow, 3);
                     Object details = table.getValueAt(selectedRow, 4);
 
+                    // Declare variables to store the specific details of each product
                     String specificDetail1 = "";
                     String specificDetail2 = "";
 
+                    // Check if the category is Electronics
                     if ("Electronics".equals(category)) {
                         String[] detailsArray = ((String) details).split(",");
+                        // Set the specific details to the brand and warranty period of the product
                         specificDetail1 = "Brand: " + detailsArray[0].trim();
                         specificDetail2 = "Warranty Period: " + detailsArray[1].trim();
-                    } else if ("Clothing".equals(category)) {
+                    } else if ("Clothing".equals(category)) {// Check if the category is Clothing
                         String[] detailsArray = ((String) details).split(",");
+                        // Set the specific details to the size and color of the product
                         specificDetail1 = "Size: " + detailsArray[0].trim();
                         specificDetail2 = "Color: " + detailsArray[1].trim();
                     }
 
+                    // Create a string builder to append the HTML tags and product information
                     StringBuilder sb = new StringBuilder();
                     sb.append("<html><body>");
                     sb.append("<b>Selected Product - Details</b><br>");
@@ -239,12 +219,12 @@ public class GUI1 {
                     sb.append(specificDetail2).append("<br>");
                     sb.append("</body></html>");
 
-                    JLabel rowLabel = new JLabel(sb.toString());
-
+                    JLabel rowLabel = new JLabel(sb.toString());// Create a label with the string builder as the text
 
                     subPanel3.removeAll(); // Clear the subPanel3 before adding the new label
-                    subPanel3.add(rowLabel);
-                    panel3.add(subPanel3); // Adding subPanel3 to panel3
+                    subPanel3.add(rowLabel);// Add the label to subPanel3
+                    panel3.add(subPanel3);
+                    // Revalidate and repaint panel3 and subPanel3
                     panel3.revalidate();
                     panel3.repaint();
                     subPanel3.revalidate();
@@ -253,125 +233,21 @@ public class GUI1 {
             }
         });
 
-        // Declare an ArrayList to store the details
-//        ArrayList<String> detailsList = new ArrayList<String>();
-
-//
-//        // In the button2 action listener, clear the ArrayList before adding new data
-//        button2.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // Clear the ArrayList before adding new data
-//                detailsList.clear();
-//                // Loop through the components of subPanel3
-//                for (Component c : subPanel3.getComponents()) {
-//                    // Check if the component is a JLabel
-//                    if (c instanceof JLabel) {
-//                        // Get the text of the JLabel and remove the HTML tags
-//                        String text = ((JLabel) c).getText().replaceAll("<[^>]*>", "");
-//                        // Split the text by line breaks and add each line to the ArrayList
-//                        for (String line : text.split("\n")) {
-//                            detailsList.add(line);
-//                        }
-//                    }
-//                }
-//                // Print the ArrayList for testing
-//                System.out.println(detailsList);
-//                // Create the GUI2 object only if it is null
-//                if (gui2 == null) {
-//                    gui2 = new GUI2(detailsList);
-//                }
-//                // Pass the ArrayList to the GUI2 object
-//                gui2.setDetailsList(detailsList);
-//            }
-//        });
-
-
-//        button2.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // Loop through the components of subPanel3
-//                for (Component c : subPanel3.getComponents()) {
-//                    // Check if the component is a JLabel
-//                    if (c instanceof JLabel) {
-//                        // Get the text of the JLabel and remove the HTML tags
-//                        String text = ((JLabel) c).getText().replaceAll("<[^>]*>", "");
-//                        // Split the text by line breaks and add each line to the ArrayList
-//                        for (String line : text.split("\n")) {
-//                            detailsList.add(line);
-//                        }
-//                    }
-//                }
-//                // Print the ArrayList for testing
-//                System.out.println(detailsList);
-//                // Create the GUI2 object only if it is null
-//                if (gui2 == null) {
-//                    gui2 = new GUI2(detailsList);
-//                }
-//                // Pass the ArrayList to the GUI2 object
-//                gui2.setDetailsList(detailsList);
-//                // Remove the line that calls the GUI2method
-//                // gui2.GUI2method();
-//            }
-//        });
-
-
-//        button2.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // Loop through the components of subPanel3
-//                for (Component c : subPanel3.getComponents()) {
-//                    // Check if the component is a JLabel
-//                    if (c instanceof JLabel) {
-//                        // Get the text of the JLabel and remove the HTML tags
-//                        String text = ((JLabel) c).getText().replaceAll("<[^>]*>", "");
-//                        // Split the text by line breaks and add each line to the ArrayList
-//                        for (String line : text.split("\n")) {
-//                            detailsList.add(line);
-//                        }
-//                    }
-//                }
-//                // Print the ArrayList for testing
-//                System.out.println(detailsList);
-//                // Create a GUI2 object and pass the ArrayList to it
-//                GUI2 gui2 = new GUI2(detailsList);
-//                // Call the printArrayList method to display the ArrayList in the frame
-//                gui2.GUI2method();
-//            }
-//        });
-
-
-//        button2.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // Loop through the components of subPanel3
-//                for (Component c : subPanel3.getComponents()) {
-//                    // Check if the component is a JLabel
-//                    if (c instanceof JLabel) {
-//                        // Get the text of the JLabel and remove the HTML tags
-//                        String text = ((JLabel) c).getText().replaceAll("<[^>]*>", "");
-//                        // Split the text by line breaks and add each line to the ArrayList
-//                        for (String line : text.split("\n")) {
-//                            detailsList.add(line);
-//                        }
-//                    }
-//                }
-//                // Print the ArrayList for testing
-//                System.out.println(detailsList);
-//            }
-//        });
-
-//// Add the button to the panel
-//        panel3.add(button);
-
-
-//         Create another anonymous inner class for the combo box
+        // Add an action listener to the combo box
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Get the source of the event as a combo box
                 JComboBox cb = (JComboBox) e.getSource();
-                String selectedCategory = (String) cb.getSelectedItem();
+                String selectedCategory = (String) cb.getSelectedItem(); // Get the selected item as a string
+                // Create a table row sorter with the table model
                 TableRowSorter<TableModel> sorter = new TableRowSorter<>(tableModel);
                 table.setRowSorter(sorter);
+                // Check if the selected item is All
                 if ("All".equals(selectedCategory)) {
                     sorter.setRowFilter(null);
                 } else {
+                    // Set the row filter to match the selected category in the third column
                     sorter.setRowFilter(RowFilter.regexFilter(selectedCategory, 2));
                 }
             }

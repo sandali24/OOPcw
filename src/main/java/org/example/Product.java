@@ -1,7 +1,9 @@
 package org.example;
 
+import java.io.Serializable;
+
 //Abstract Super Class Product
-public abstract class Product {
+public class Product implements Serializable {
     private String productId;
     private String productName;
     private int numOfAvailableItems;

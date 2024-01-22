@@ -62,29 +62,5 @@ public class ShoppingCart {
         // Return the array
         return result;
     }
-
-
-//    public double calculateTotalCost(List<Product> productsInCart) {
-//        double discount = 0;
-//        int electronic = 0;
-//        int clothing = 0;
-//        double totalCost = 0;
-//        double finalcost = 0;
-//        for (Product product : listOfProducts) {
-//            if (product instanceof Electronics) {
-//                electronic += product.getNumOfAvailableItems();
-//            }
-//            if (product instanceof Clothing)
-//                clothing += product.getNumOfAvailableItems();
-//            totalCost += product.getPrice();
-//        }
-//        finalcost = totalCost;
-//        if (electronic >= 3 || clothing >= 3) {
-//            discount = totalCost * 0.2;
-//            finalcost = totalCost - discount;
-//        }
-//
-//
-//    }
 }
 

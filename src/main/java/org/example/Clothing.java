@@ -1,7 +1,9 @@
 package org.example;
 
+import java.io.Serializable;
+
 //Sub Class Clothing
-public class Clothing extends Product{
+public class Clothing extends Product implements Serializable {
     private String size;
     private String colour;
     //Constructor of Clothing Class
